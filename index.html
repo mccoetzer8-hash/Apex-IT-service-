@@ -3,39 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex IT & PC Solutions | Fast, Reliable Tech Support</title>
+    <title>Apex IT & PC Solutions | Next-Gen Tech Support</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-dark: #090d16;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-cyan: #38bdf8;
+            --accent-green: #4ade80;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: #0f172a;
-            color: #f8fafc;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             line-height: 1.6;
-            padding-bottom: 80px;
+            padding-bottom: 90px;
+            overflow-x: hidden;
+        }
+
+        /* Animated Glowing Background Effect */
+        .glow-bg {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+            filter: blur(50px);
         }
 
         /* Header */
         header {
-            padding: 20px;
+            padding: 16px 20px;
             text-align: center;
-            border-bottom: 1px solid #1e293b;
-            background: #0f172a;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(9, 13, 22, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 90;
         }
 
         .logo {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             letter-spacing: -0.5px;
             color: #ffffff;
         }
 
         .logo span {
-            color: #38bdf8;
+            color: var(--accent-cyan);
         }
 
         /* Hero Section */
@@ -49,56 +80,82 @@
         .badge {
             display: inline-block;
             background: rgba(56, 189, 248, 0.1);
-            color: #38bdf8;
+            color: var(--accent-cyan);
             padding: 6px 14px;
             border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 700;
             margin-bottom: 16px;
-            border: 1px solid rgba(56, 189, 248, 0.2);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .hero h1 {
-            font-size: 32px;
+            font-size: 34px;
             font-weight: 800;
-            line-height: 1.2;
+            line-height: 1.15;
             margin-bottom: 16px;
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            color: #94a3b8;
-            font-size: 16px;
+            color: var(--text-muted);
+            font-size: 15px;
             margin-bottom: 24px;
+        }
+
+        /* Hero Image Container */
+        .hero-img-box {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-bottom: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .hero-img-box img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
         }
 
         .cta-btn {
             display: block;
             width: 100%;
-            background: #38bdf8;
-            color: #0f172a;
+            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
+            color: #ffffff;
             text-align: center;
             padding: 16px;
             border-radius: 12px;
             font-weight: 700;
             font-size: 16px;
             text-decoration: none;
-            box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3);
+            transition: transform 0.2s;
         }
 
-        /* Trust Banner */
-        .trust-banner {
-            display: flex;
-            justify-content: space-around;
-            background: #1e293b;
-            padding: 16px;
-            margin: 20px 0;
-            text-align: center;
-            font-size: 13px;
-            color: #cbd5e1;
-            font-weight: 600;
+        .cta-btn:active {
+            transform: scale(0.98);
         }
 
-        /* Services Grid */
+        /* Scroll Animation Target */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Services Section */
         .services {
             padding: 20px;
             max-width: 600px;
@@ -106,73 +163,92 @@
         }
 
         .section-title {
-            font-size: 20px;
+            font-size: 22px;
             margin-bottom: 20px;
             text-align: center;
+            font-weight: 800;
         }
 
         .card {
-            background: #1e293b;
-            border: 1px solid #334155;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 12px;
         }
 
         .card h3 {
             font-size: 18px;
-            color: #38bdf8;
-            margin-bottom: 8px;
+            color: var(--accent-cyan);
+            margin-bottom: 6px;
+            font-weight: 700;
         }
 
         .card p {
-            color: #94a3b8;
+            color: var(--text-muted);
             font-size: 14px;
         }
 
-        /* Offer Section */
+        /* Special Offer Container */
         .special-offer {
             margin: 30px 20px;
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border: 1px dashed #38bdf8;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid var(--accent-green);
             border-radius: 16px;
-            padding: 20px;
+            padding: 24px 20px;
             text-align: center;
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.1);
         }
 
         .special-offer h3 {
-            color: #4ade80;
-            font-size: 18px;
+            color: var(--accent-green);
+            font-size: 20px;
             margin-bottom: 8px;
+            font-weight: 800;
         }
 
-        /* Fixed Bottom Mobile Call-Bar */
+        /* Fixed Mobile Call-Bar */
         .sticky-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: #0f172a;
-            border-top: 1px solid #334155;
+            background: rgba(9, 13, 22, 0.9);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border-color);
             padding: 12px 20px;
             display: flex;
-            gap: 10px;
+            gap: 12px;
             z-index: 100;
         }
 
         .bar-btn {
             flex: 1;
-            padding: 12px;
+            padding: 14px;
             text-align: center;
-            border-radius: 8px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 700;
             font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .btn-call {
-            background: #38bdf8;
-            color: #0f172a;
+            background: var(--accent-cyan);
+            color: #090d16;
         }
 
         .btn-whatsapp {
@@ -183,63 +259,79 @@
         footer {
             text-align: center;
             padding: 20px;
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 12px;
         }
     </style>
 </head>
 <body>
 
+    <div class="glow-bg"></div>
+
     <header>
         <div class="logo">APEX <span>IT SERVICES</span></div>
     </header>
 
-    <section class="hero">
+    <section class="hero scroll-reveal">
         <span class="badge">Hardware & Software Specialists</span>
-        <h1>Fast, Honest & Professional Tech Support</h1>
-        <p>From custom PC builds and cooling upgrades to hardware troubleshooting and remote IT assistance.</p>
+        <h1>Fast, Reliable Tech Support & PC Repairs</h1>
+        <p>From custom rig assemblies and thermal upgrades to hardware fixes and managed IT support.</p>
+        
+        <div class="hero-img-box">
+            <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=800&q=80" alt="PC Hardware Build">
+        </div>
+
         <a href="tel:0123456789" class="cta-btn">Get a Free Diagnosis</a>
     </section>
 
-    <div class="trust-banner">
-        <div>⚡ Rapid Turnaround</div>
-        <div>🛡️ Clear Upfront Rates</div>
-        <div>⭐ 100% Guaranteed</div>
-    </div>
-
     <section class="services">
-        <h2 class="section-title">Core Services</h2>
+        <h2 class="section-title scroll-reveal">Our Services</h2>
 
-        <div class="card">
-            <h3>🖥️ Custom PC Builds & Upgrades</h3>
-            <p>Tailored high-performance gaming rigs and workstations, thermal repasting, cooling replacement, and hardware swaps.</p>
+        <div class="card scroll-reveal">
+            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80" class="card-img" alt="Custom Gaming PC">
+            <h3>Custom PC Builds & Upgrades</h3>
+            <p>High-performance gaming rigs, thermal paste repasting, cooling system replacements, and component upgrades.</p>
         </div>
 
-        <div class="card">
-            <h3>🔧 Hardware & Software Repairs</h3>
-            <p>Diagnosing boot failures, component damage, blue screen errors, bloatware cleanup, and OS reinstalls.</p>
+        <div class="card scroll-reveal">
+            <img src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=800&q=80" class="card-img" alt="Computer Hardware Maintenance">
+            <h3>Hardware & Software Diagnostics</h3>
+            <p>Boot fault troubleshooting, component repairs, blue screen error fixes, OS re-installs, and bloatware removal.</p>
         </div>
 
-        <div class="card">
-            <h3>🌐 Managed IT & Network Support</h3>
-            <p>Desktop support, system optimization, software setup, remote troubleshooting, and network configurations.</p>
+        <div class="card scroll-reveal">
+            <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=800&q=80" class="card-img" alt="IT Managed Support">
+            <h3>Desktop Support & IT Services</h3>
+            <p>Remote IT assistance, cloud setup, system optimization, desktop support, and home/business network configuration.</p>
         </div>
     </section>
 
-    <section class="special-offer">
-        <h3>🎁 Limited Time Promo</h3>
-        <p>Get a complimentary system tune-up and bloatware removal with any hardware repair service!</p>
+    <section class="special-offer scroll-reveal">
+        <h3>🎁 First-Time Customer Offer</h3>
+        <p>Get a completely free software tune-up and speed boost with any hardware service!</p>
     </section>
 
     <footer>
-        &copy; 2026 Apex IT Services. All Rights Reserved.
+        &copy; 2026 Apex IT Services. Built for performance.
     </footer>
 
-    <!-- Fixed Mobile Contact Buttons -->
+    <!-- Fixed Mobile Bottom Contact Bar -->
     <div class="sticky-bar">
         <a href="tel:0123456789" class="bar-btn btn-call">📞 Call Now</a>
         <a href="https://wa.me/1234567890" class="bar-btn btn-whatsapp">💬 WhatsApp</a>
     </div>
 
+    <!-- Scroll Reveal JavaScript Animation -->
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+    </script>
 </body>
 </html>
