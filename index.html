@@ -5,8 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEAD PIXEL | High-End Hardware & IT</title>
     
-    <!-- Added ./ to force GitHub Pages to find the file in the current directory -->
-   <link rel="stylesheet" href="/SharkBytes-IT-service-/style.css">
+    <style>
+        :root {
+            --bg-color: #000000; 
+            --off-black: #050505; 
+            --text-main: #ffffff;
+            --text-subtitle: #cccccc;
+            --white-glow: #ffffff;
+            --dead-pixel-cyan: #00ffff;
+            --dead-pixel-red: #ff0000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: hidden;
+            height: 100vh;
+        }
+
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .hero-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .content-box {
+            position: relative;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 60px 40px;
+            border: 1px solid #1a1a1a;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.03);
+        }
+
+        .glitch-title {
+            font-size: 4rem;
+            letter-spacing: 4px;
+            color: var(--text-main);
+            text-shadow: 0 0 15px var(--white-glow);
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-subtitle);
+            margin-bottom: 35px;
+        }
+
+        .glow-btn {
+            display: inline-block;
+            padding: 14px 35px;
+            color: var(--white-glow);
+            border: 2px solid var(--white-glow);
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+            box-shadow: 0 0 10px var(--white-glow);
+            transition: all 0.3s ease-in-out;
+            letter-spacing: 1px;
+        }
+
+        .glow-btn:hover {
+            background-color: var(--white-glow);
+            color: var(--bg-color);
+            box-shadow: 0 0 30px var(--white-glow), 0 0 60px var(--white-glow);
+        }
+    </style>
 </head>
 <body>
 
@@ -20,7 +106,177 @@
         </div>
     </main>
 
-    <!-- Added ./ here as well -->
-   <script src="/SharkBytes-IT-service-/script.js"></script>
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let squaresArray = [];
+        const gridSize = 30; 
+        const cellSize = 6;  
+        let deadPixelIndex = 0;
+
+        function initGrid() {
+            squaresArray = [];
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                for (let y = 0; y < canvas.height; y += gridSize) {
+                    squaresArray.push({
+                        x: x,
+                        y: y,
+                        alpha: Math.random() * 0.15 + 0.05
+                    });
+                }
+            }
+            deadPixelIndex = Math.floor(Math.random() * squaresArray.length);
+        }
+
+        const glitchColors = [
+            { rgb: '255, 0, 0', glow: '#ff0000' },     
+            { rgb: '0, 255, 255', glow: '#00ffff' },   
+            { rgb: '0, 255, 0', glow: '#00ff00' },     
+            { rgb: '255, 255, 0', glow: '#ffff00' },   
+            { rgb: '255, 0, 255', glow: '#ff00ff' }    
+        ];
+
+        setInterval(() => {
+            if (squaresArray[deadPixelIndex]) {
+                squaresArray[deadPixelIndex].alpha = 0.9; 
+                const color = glitchColors[Math.floor(Math.random() * glitchColors.length)];
+                squaresArray[deadPixelIndex].color = color;
+            }
+        }, Math.random() * 2000 + 1500); 
+
+        function drawGrid() {
+            for (let i = 0; i < squaresArray.length; i++) {
+                let sq = squaresArray[i];
+
+                if (i === deadPixelIndex && sq.color) {
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = sq.color.glow;
+                    ctx.fillStyle = `rgba(${sq.color.rgb}, ${sq.alpha})`;
+                    ctx.fillRect(sq.x, sq.y, cellSize, cellSize);
+                    ctx.shadowBlur = 0; 
+                } else {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${sq.alpha})`;
+                    ctx.fillRect(sq.x, sq.y, cellSize, cellSize);
+                }
+            }
+        }
+
+        const ghostX = canvas.width / 2; 
+        const ghostY = canvas.height * 0.75; 
+        const ghostBaseWidth = 120;
+        const ghostHeight = 180;
+
+        function drawGhost() {
+            ctx.strokeStyle = `rgba(5, 5, 5, 0.1)`; 
+            ctx.lineWidth = 1.5;
+            ctx.shadowBlur = 0; 
+
+            ctx.beginPath();
+            ctx.moveTo(ghostX - ghostBaseWidth / 2, ghostY);
+            ctx.lineTo(ghostX - ghostBaseWidth / 2 + 10, ghostY - ghostHeight * 0.4);
+            ctx.quadraticCurveTo(ghostX, ghostY - ghostHeight - 20, ghostX + ghostBaseWidth / 2 - 10, ghostY - ghostHeight * 0.4);
+            ctx.lineTo(ghostX + ghostBaseWidth / 2, ghostY);
+            ctx.stroke();
+
+            ctx.strokeRect(ghostX - 15, ghostY - ghostHeight * 0.65, 8, 8);
+            ctx.strokeRect(ghostX + 7, ghostY - ghostHeight * 0.65, 8, 8);
+        }
+
+        let smokeParticles = [];
+        const maxSmoke = 80;
+
+        class SmokeParticle {
+            constructor() {
+                this.x = ghostX + (Math.random() - 0.5) * (ghostBaseWidth * 0.8);
+                this.y = ghostY + Math.random() * 20; 
+                this.size = Math.random() * 15 + 10;
+                this.vy = -(Math.random() * 0.8 + 0.3); 
+                this.vx = (Math.random() - 0.5) * 0.6; 
+                this.alpha = 0.4;
+                this.shrinkRate = Math.random() * 0.05 + 0.02;
+                this.fadeRate = Math.random() * 0.003 + 0.001;
+                
+                if (Math.random() < 0.07) {
+                    this.color = { rgb: '255, 0, 0', glow: '#ff0000' }; 
+                } else {
+                    this.color = { rgb: '85, 85, 85', glow: 'transparent' }; 
+                }
+            }
+
+            update() {
+                this.y += this.vy;
+                this.x += this.vx;
+                this.size -= this.shrinkRate;
+                this.alpha -= this.fadeRate;
+                this.vx += (Math.random() - 0.5) * 0.1;
+            }
+
+            draw() {
+                if (this.size > 0 && this.alpha > 0) {
+                    ctx.fillStyle = `rgba(${this.color.rgb}, ${this.alpha})`;
+                    
+                    if (this.color.glow !== 'transparent') {
+                        ctx.shadowBlur = 10;
+                        ctx.shadowColor = this.color.glow;
+                    } else {
+                        ctx.shadowBlur = 0;
+                    }
+                    
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0; 
+                }
+            }
+        }
+
+        function spawnSmoke() {
+            if (smokeParticles.length < maxSmoke) {
+                smokeParticles.push(new SmokeParticle());
+            }
+        }
+
+        function updateSmoke() {
+            for (let i = 0; i < smokeParticles.length; i++) {
+                smokeParticles[i].update();
+                if (smokeParticles[i].size <= 0 || smokeParticles[i].alpha <= 0) {
+                    smokeParticles.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function drawSmoke() {
+            for (let i = 0; i < smokeParticles.length; i++) {
+                smokeParticles[i].draw();
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGhost();
+            spawnSmoke();
+            updateSmoke();
+            drawSmoke();
+            drawGrid();
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initGrid();
+        });
+
+        initGrid();
+        animate();
+    </script>
 </body>
 </html>
