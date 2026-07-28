@@ -1,0 +1,82 @@
+:root {
+    --bg-color: #05050a;
+    --cyan-glow: #00f3ff;
+    --dark-cyan: #008b94;
+    --text-main: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Courier New', Courier, monospace;
+    overflow-x: hidden;
+    height: 100vh;
+}
+
+/* Canvas sits behind everything */
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.hero-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    padding: 20px;
+}
+
+.content-box {
+    position: relative;
+    z-index: 2;
+    background: rgba(5, 5, 10, 0.75);
+    padding: 40px;
+    border: 1px solid var(--dark-cyan);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.15);
+    border-radius: 8px;
+}
+
+.glitch-title {
+    font-size: 3rem;
+    letter-spacing: 2px;
+    color: var(--text-main);
+    text-shadow: 0 0 10px var(--cyan-glow), 0 0 20px var(--cyan-glow);
+    margin-bottom: 15px;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: #a0a0c0;
+    margin-bottom: 30px;
+}
+
+/* Glowing Button Style */
+.glow-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    color: var(--cyan-glow);
+    border: 2px solid var(--cyan-glow);
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    box-shadow: 0 0 10px var(--cyan-glow);
+    transition: all 0.3s ease-in-out;
+}
+
+.glow-btn:hover {
+    background-color: var(--cyan-glow);
+    color: var(--bg-color);
+    box-shadow: 0 0 25px var(--cyan-glow), 0 0 50px var(--cyan-glow);
+}
