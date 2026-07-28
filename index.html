@@ -7,8 +7,8 @@
     
     <style>
         :root {
-            --bg-color: #000000; 
-            --off-black: #050505; 
+            --bg-color: #000000;
+            --off-black: #050505;
             --text-main: #ffffff;
             --text-subtitle: #cccccc;
             --white-glow: #ffffff;
@@ -22,14 +22,56 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: 'Courier New', Courier, monospace;
             overflow-x: hidden;
-            height: 100vh;
+            /* Changed to min-height to allow scrolling */
+            min-height: 100vh; 
         }
 
+        /* =========================================
+           TOP RIGHT LOGO: 5x5 GLITCH GRID
+           ========================================= */
+        .header-logo {
+            position: fixed;
+            top: 25px;
+            right: 35px;
+            display: grid;
+            grid-template-columns: repeat(5, 8px);
+            gap: 2px;
+            z-index: 100;
+            background: rgba(0,0,0,0.5);
+            padding: 5px;
+            border-radius: 2px;
+        }
+
+        .logo-pixel {
+            width: 8px;
+            height: 8px;
+            background-color: #222;
+        }
+
+        .dead-logo-pixel {
+            background-color: #fff;
+            animation: logo-glitch 2s infinite;
+        }
+
+        @keyframes logo-glitch {
+            0%, 100% { background-color: #ff0000; box-shadow: 0 0 8px #ff0000; }
+            25% { background-color: #00ffff; box-shadow: 0 0 8px #00ffff; }
+            50% { background-color: #00ff00; box-shadow: 0 0 8px #00ff00; }
+            75% { background-color: #ff00ff; box-shadow: 0 0 8px #ff00ff; }
+        }
+
+        /* =========================================
+           CANVAS & HERO SECTION
+           ========================================= */
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -92,20 +134,261 @@
             color: var(--bg-color);
             box-shadow: 0 0 30px var(--white-glow), 0 0 60px var(--white-glow);
         }
+
+        /* =========================================
+           INTRO & DIAGNOSTICS SECTION
+           ========================================= */
+        .intro-section {
+            min-height: 100vh;
+            background: linear-gradient(to bottom, transparent, #020202 15%, #000000 100%);
+            padding: 100px 20px;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .theme-tagline {
+            font-size: 1.5rem;
+            color: var(--dead-pixel-cyan);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .intro-text {
+            font-size: 1.2rem;
+            color: var(--text-subtitle);
+            max-width: 800px;
+            text-align: center;
+            line-height: 1.8;
+            margin-bottom: 60px;
+        }
+
+        .image-container {
+            width: 100%;
+            max-width: 700px;
+            margin-bottom: 80px;
+            border: 1px solid #1a1a1a;
+            border-bottom: 3px solid var(--dead-pixel-red);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 0, 0, 0.05);
+            background-color: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px; /* Placeholder height */
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            opacity: 0.85; /* Dims the image slightly to fit the dark theme */
+        }
+
+        .diagnostics-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid #222;
+            padding: 40px;
+            border-radius: 4px;
+        }
+
+        .diag-title {
+            color: var(--text-main);
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+            text-align: center;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px var(--white-glow);
+        }
+
+        .stat-group {
+            margin-bottom: 30px;
+        }
+
+        .stat-label {
+            display: flex;
+            justify-content: space-between;
+            color: #aaa;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .bar-bg {
+            width: 100%;
+            height: 14px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .bar-fill-critical {
+            height: 100%;
+            width: 92%;
+            background: var(--dead-pixel-red);
+            box-shadow: 0 0 15px var(--dead-pixel-red);
+        }
+
+        .bar-fill-optimal {
+            height: 100%;
+            width: 18%;
+            background: var(--dead-pixel-cyan);
+            box-shadow: 0 0 15px var(--dead-pixel-cyan);
+        }
+
+        /* =========================================
+           SERVICES SECTION
+           ========================================= */
+        .services-section {
+            padding: 100px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            background-color: #000000;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--text-main);
+            margin-bottom: 60px;
+            text-shadow: 0 0 10px var(--white-glow);
+            letter-spacing: 2px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .service-card {
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid #1a1a1a;
+            padding: 40px 30px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            border-color: var(--dead-pixel-cyan);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .service-card h3 {
+            color: var(--white-glow);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .service-card p {
+            color: var(--text-subtitle);
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
 
+    <!-- 5x5 LOGO AT TOP RIGHT -->
+    <div class="header-logo">
+        <div class="logo-pixel"></div><div class="logo-pixel"></div><div class="logo-pixel"></div><div class="logo-pixel"></div><div class="logo-pixel"></div>
+        <div class="logo-pixel"></div><div class="logo-pixel"></div><div class="logo-pixel"></div><div class="logo-pixel"></div><div class="logo-pixel"></div>
+        <div class="logo-pixel"></div><div class="logo-pixel"></div><div class="dead-logo-pixel"></div><div class="logo-pixel"></div><div class="logo-pixel"></div>
+        <div class="logo-pixel"></div><div class="logo-pixel"></div><div class="logo-pixel"></div><div class="logo-pixel"></div><div class="logo-pixel"></div>
+        <div class="logo-pixel"></div><div class="logo-pixel"></div><div class="logo-pixel"></div><div class="logo-pixel"></div><div class="logo-pixel"></div>
+    </div>
+
+    <!-- CANVAS BACKGROUND -->
     <canvas id="particle-canvas"></canvas>
 
+    <!-- HERO SECTION -->
     <main class="hero-container">
         <div class="content-box">
             <h1 class="glitch-title">DEAD PIXEL</h1>
             <p class="subtitle">System Diagnostics, Hardware Mods, and Network Configuration.</p>
-            <a href="#services" class="glow-btn">Diagnose Faults</a>
+            <!-- Anchor link points to intro section below -->
+            <a href="#system-status" class="glow-btn">Diagnose Faults</a>
         </div>
     </main>
 
+    <!-- INTRO & GRAPHICS SECTION -->
+    <section id="system-status" class="intro-section">
+        <h2 class="theme-tagline">Your System is Bleeding Performance.</h2>
+        <p class="intro-text">
+            Computer repairs, hardware upgrades, custom PC builds, and whole-home WiFi optimisation — solved fast, done right.
+        </p>
+
+        <!-- IMAGE CONTAINER -->
+        <div class="image-container">
+            <!-- 
+              Once you generate your image, save it as "pc-skulls.jpg", upload it to GitHub,
+              and this code will display it. If the image isn't there yet, this shows standard text.
+            -->
+            <img src="pc-skulls.jpg" alt="High-End Black and Gold PC on a pile of skulls fading to dark">
+        </div>
+
+        <!-- DIAGNOSTICS BARS -->
+        <div class="diagnostics-container">
+            <h3 class="diag-title">SYSTEM BLOAT IMPACT</h3>
+            
+            <div class="stat-group">
+                <div class="stat-label">
+                    <span>Background Processes (Unoptimized Machine)</span>
+                    <span style="color: var(--dead-pixel-red);">CRITICAL STRAIN</span>
+                </div>
+                <div class="bar-bg"><div class="bar-fill-critical"></div></div>
+            </div>
+
+            <div class="stat-group">
+                <div class="stat-label">
+                    <span>Load Times (Dead Pixel Optimized)</span>
+                    <span style="color: var(--dead-pixel-cyan);">MAXIMUM EFFICIENCY</span>
+                </div>
+                <div class="bar-bg"><div class="bar-fill-optimal"></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section id="services" class="services-section">
+        <h2 class="section-title">SERVICE PROTOCOLS</h2>
+        <div class="services-grid">
+            
+            <div class="service-card">
+                <h3>Network Configuration</h3>
+                <p>Complete local area network (LAN) setups, Wi-Fi optimization, and secure router configurations for uninterrupted connectivity.</p>
+            </div>
+
+            <div class="service-card">
+                <h3>High-Performance Builds</h3>
+                <p>Assembly of custom, high-end gaming desktop computers, parts upgrading, and specialized laptop cooling system maintenance.</p>
+            </div>
+
+            <div class="service-card">
+                <h3>Custom Hardware Mods</h3>
+                <p>Specialty chassis modifications, including custom transparent LCD side panel installations utilizing 40-pin LVDS controller boards.</p>
+            </div>
+
+            <div class="service-card">
+                <h3>System Diagnostics</h3>
+                <p>Comprehensive hardware and software troubleshooting to identify, isolate, and repair system faults and software corruption.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- JAVASCRIPT -->
     <script>
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
@@ -117,6 +400,7 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
+        // 1. GRID ENGINE
         let squaresArray = [];
         const gridSize = 30; 
         const cellSize = 6;  
@@ -169,45 +453,61 @@
             }
         }
 
+        // 2. GHOST ENGINE
         const ghostX = canvas.width / 2; 
         const ghostY = canvas.height * 0.75; 
         const ghostBaseWidth = 120;
         const ghostHeight = 180;
 
         function drawGhost() {
-            ctx.strokeStyle = `rgba(5, 5, 5, 0.1)`; 
-            ctx.lineWidth = 1.5;
-            ctx.shadowBlur = 0; 
+            // Slightly more visible outline for the hooded figure
+            ctx.strokeStyle = `rgba(20, 20, 20, 0.4)`; 
+            ctx.lineWidth = 2;
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = '#000'; 
 
+            // Hood shape
             ctx.beginPath();
             ctx.moveTo(ghostX - ghostBaseWidth / 2, ghostY);
             ctx.lineTo(ghostX - ghostBaseWidth / 2 + 10, ghostY - ghostHeight * 0.4);
             ctx.quadraticCurveTo(ghostX, ghostY - ghostHeight - 20, ghostX + ghostBaseWidth / 2 - 10, ghostY - ghostHeight * 0.4);
             ctx.lineTo(ghostX + ghostBaseWidth / 2, ghostY);
             ctx.stroke();
-
+            
+            // Faint red glowing 'eyes' or core elements inside the hood
+            ctx.fillStyle = `rgba(255, 0, 0, 0.15)`;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#ff0000';
+            ctx.fillRect(ghostX - 15, ghostY - ghostHeight * 0.65, 8, 8);
+            ctx.fillRect(ghostX + 7, ghostY - ghostHeight * 0.65, 8, 8);
+            
+            // Outline for eyes
+            ctx.strokeStyle = `rgba(255, 0, 0, 0.3)`;
             ctx.strokeRect(ghostX - 15, ghostY - ghostHeight * 0.65, 8, 8);
             ctx.strokeRect(ghostX + 7, ghostY - ghostHeight * 0.65, 8, 8);
+            ctx.shadowBlur = 0; 
         }
 
+        // 3. VOLUMETRIC SMOKE ENGINE
         let smokeParticles = [];
-        const maxSmoke = 80;
+        const maxSmoke = 100; // Increased slightly for denser smoke
 
         class SmokeParticle {
             constructor() {
-                this.x = ghostX + (Math.random() - 0.5) * (ghostBaseWidth * 0.8);
+                this.x = ghostX + (Math.random() - 0.5) * (ghostBaseWidth * 0.9);
                 this.y = ghostY + Math.random() * 20; 
-                this.size = Math.random() * 15 + 10;
-                this.vy = -(Math.random() * 0.8 + 0.3); 
-                this.vx = (Math.random() - 0.5) * 0.6; 
-                this.alpha = 0.4;
-                this.shrinkRate = Math.random() * 0.05 + 0.02;
-                this.fadeRate = Math.random() * 0.003 + 0.001;
+                this.size = Math.random() * 25 + 15; // Larger particles for clouds
+                this.vy = -(Math.random() * 0.6 + 0.2); 
+                this.vx = (Math.random() - 0.5) * 0.8; 
+                this.alpha = 0.5;
+                this.shrinkRate = Math.random() * 0.03 + 0.01;
+                this.fadeRate = Math.random() * 0.002 + 0.001;
                 
-                if (Math.random() < 0.07) {
+                // 10% chance of Red smoke accents
+                if (Math.random() < 0.10) {
                     this.color = { rgb: '255, 0, 0', glow: '#ff0000' }; 
                 } else {
-                    this.color = { rgb: '85, 85, 85', glow: 'transparent' }; 
+                    this.color = { rgb: '40, 40, 40', glow: 'transparent' }; 
                 }
             }
 
@@ -221,10 +521,16 @@
 
             draw() {
                 if (this.size > 0 && this.alpha > 0) {
-                    ctx.fillStyle = `rgba(${this.color.rgb}, ${this.alpha})`;
+                    // Volumetric Radial Gradient
+                    let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+                    gradient.addColorStop(0, `rgba(${this.color.rgb}, ${this.alpha})`);
+                    gradient.addColorStop(0.5, `rgba(${this.color.rgb}, ${this.alpha * 0.6})`);
+                    gradient.addColorStop(1, `rgba(${this.color.rgb}, 0)`);
+                    
+                    ctx.fillStyle = gradient;
                     
                     if (this.color.glow !== 'transparent') {
-                        ctx.shadowBlur = 10;
+                        ctx.shadowBlur = 15;
                         ctx.shadowColor = this.color.glow;
                     } else {
                         ctx.shadowBlur = 0;
